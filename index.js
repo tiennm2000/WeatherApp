@@ -7,7 +7,11 @@ async function checkWeather(cityName) {
     `https://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=${keyApi}&units=metric`
   );
   const data = await response.json();
-
+  if (response.status == 404) {
+    document.querySelector(".error").style.display = "block";
+  } else {
+    document.querySelector(".weather").style.display = "block";
+  }
   document.querySelector(".city").innerHTML = data.name;
   document.querySelector(".temp").innerHTML = Math.round(data.main.temp) + "°c";
   document.querySelector(".humidity").innerHTML = data.main.humidity + "%";
@@ -16,7 +20,11 @@ async function checkWeather(cityName) {
     ".weather-icon"
   ).src = `./images/${data.weather[0].main.toLowerCase()}.png`;
 }
-checkWeather("Ha Noi");
 searchBtn.addEventListener("click", () => {
   checkWeather(searchBox.value);
+});
+
+searchBox.addEventListener("click", () => {
+  document.querySelector(".error").style.display = "none";
+  document.querySelector(".weather").style.display = "none";
 });
